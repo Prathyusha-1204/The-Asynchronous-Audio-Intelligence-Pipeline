@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Intelligence Pipeline</title>
+    <!-- Modern Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="background-animation">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Audio Intelligence Pipeline</h1>
+            <p>Upload an audio file to automatically transcribe and distill its core insights using the AWS Relay-Race Architecture.</p>
+        </header>
+
+        <main>
+            <div class="upload-card" id="upload-card">
+                <div class="drag-drop-area" id="drag-drop-area">
+                    <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                    <h2>Drag & Drop your Audio File</h2>
+                    <p>or click to browse (.mp3, .wav)</p>
+                    <input type="file" id="file-input" accept=".mp3, .wav" hidden>
+                </div>
+                
+                <div class="file-info hidden" id="file-info">
+                    <i class="fa-solid fa-file-audio file-icon"></i>
+                    <div class="file-details">
+                        <span class="file-name" id="file-name">filename.mp3</span>
+                        <span class="file-size" id="file-size">2.4 MB</span>
+                    </div>
+                    <button class="remove-btn" id="remove-btn"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <button class="process-btn disabled" id="process-btn">Start Processing</button>
+            </div>
+
+            <!-- Processing / Polling State UI -->
+            <div class="status-card hidden" id="status-card">
+                <div class="progress-container">
+                    <div class="loader-circle"></div>
+                    <h3 id="status-text">Uploading to S3...</h3>
+                    <p id="sub-status-text">Waking up the pipeline</p>
+                </div>
+                <!-- Architecture visualization steps -->
+                <div class="pipeline-steps">
+                    <div class="step active" id="step-1">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <span>Upload S3</span>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step" id="step-2">
+                        <i class="fa-solid fa-ear-listen"></i>
+                        <span>Transcribing</span>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step" id="step-3">
+                        <i class="fa-solid fa-brain"></i>
+                        <span>Summarizing</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final Result UI -->
+            <div class="result-card hidden" id="result-card">
+                <div class="result-header">
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="transcript">
+                            <i class="fa-solid fa-file-lines"></i> Transcription
+                        </button>
+                    </div>
+                    <button class="copy-btn" id="copy-btn" title="Copy to clipboard"><i class="fa-regular fa-copy"></i></button>
+                </div>
+
+                <div id="transcript-section" class="tab-content">
+                    <div class="result-content" id="transcript-content">
+                        <!-- Raw transcript will be injected here -->
+                    </div>
+                </div>
+
+                <button class="reset-btn" id="reset-btn">Process Another File</button>
+            </div>
+        </main>
+        
+        <footer>
+            <p>Powered by Amazon Transcribe & Amazon Bedrock</p>
+        </footer>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
